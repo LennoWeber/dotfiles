@@ -1,0 +1,13 @@
+# Backups und Editor-/Tool-Reste
+*.bak
+*.bak.*
+*.backup*
+*.before-*
+*dmsbackup*
+*~
+*.swp
+__pycache__/
+*.pyc
+
+# Maschinenspezifischer Zustand
+noctalia/.config/noctalia/backup/

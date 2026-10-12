@@ -1,0 +1,35 @@
+[config]
+
+[templates]
+
+# User-defined templates
+# Add your custom templates below
+# Example:
+# [templates.myapp]
+# input_path = "~/.config/noctalia/templates/myapp.css"
+# output_path = "~/.config/myapp/theme.css"
+# post_hook = "myapp --reload-theme"
+
+
+[templates.fuzzel-solid]
+input_path = "~/.config/noctalia/templates/fuzzel.conf"
+output_path = "~/.config/fuzzel/themes/noctalia"
+post_hook = "~/.config/noctalia/scripts/apply-fuzzel-theme.sh"
+
+[templates.brave-colors]
+input_path = "~/.config/noctalia/templates/brave-colors.json"
+output_path = "~/.config/noctalia/brave-extension/colors.json"
+post_hook = "~/.config/noctalia/scripts/apply-brave-theme.sh"
+
+[templates.brave-content]
+input_path = "~/.config/noctalia/templates/brave-content.css"
+output_path = "~/.config/noctalia/brave-extension/content.css"
+post_hook = "~/.config/noctalia/scripts/apply-brave-theme.sh"
+
+[templates.fastfetch]
+input_path = "~/.config/fastfetch/config.jsonc.template"
+output_path = "~/.config/fastfetch/config.jsonc"
+
+[templates.starship-noctalia]
+input_path = "~/.config/starship.toml.template"
+output_path = "~/.config/starship.toml"

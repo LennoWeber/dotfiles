@@ -1,0 +1,80 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "builtin",
+    "source": "rhel_old",
+    "padding": {
+      "top": 1,
+      "right": 3
+    }
+  },
+  "display": {
+    "color": {
+      "keys": "#{{colors.primary.default.hex_stripped}}",
+      "output": "#{{colors.on_surface.default.hex_stripped}}",
+      "separator": "#{{colors.outline.default.hex_stripped}}",
+      "title": "#{{colors.secondary.default.hex_stripped}}"
+    }
+  },
+  "modules": [
+    "title",
+    "separator",
+    {
+      "type": "os",
+      "key": " OS",
+      "keyColor": "#{{colors.primary.default.hex_stripped}}"
+    },
+    {
+      "type": "host",
+      "key": "󰌢 PC",
+      "keyColor": "#{{colors.tertiary.default.hex_stripped}}"
+    },
+    {
+      "type": "kernel",
+      "key": " Kernel",
+      "keyColor": "#{{colors.secondary.default.hex_stripped}}"
+    },
+    {
+      "type": "uptime",
+      "key": "󰅐 Uptime",
+      "keyColor": "#{{colors.error.default.hex_stripped}}"
+    },
+    {
+      "type": "packages",
+      "key": "󰏖 Pkgs",
+      "keyColor": "#{{colors.primary.default.hex_stripped}}"
+    },
+    {
+      "type": "shell",
+      "key": " Shell",
+      "keyColor": "#{{colors.tertiary.default.hex_stripped}}"
+    },
+    {
+      "type": "wm",
+      "key": " WM",
+      "keyColor": "#{{colors.secondary.default.hex_stripped}}"
+    },
+    {
+      "type": "terminal",
+      "key": " Term",
+      "keyColor": "#{{colors.primary.default.hex_stripped}}"
+    },
+    {
+      "type": "cpu",
+      "key": " CPU",
+      "keyColor": "#{{colors.tertiary.default.hex_stripped}}"
+    },
+    {
+      "type": "memory",
+      "key": " Mem",
+      "keyColor": "#{{colors.error.default.hex_stripped}}"
+    },
+    {
+      "type": "battery",
+      "key": "󰁹 Batt",
+      "keyColor": "#{{colors.secondary.default.hex_stripped}}"
+    },
+    "break",
+    "colors"
+  ]
+}

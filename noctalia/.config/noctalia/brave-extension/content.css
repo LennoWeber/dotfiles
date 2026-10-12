@@ -1,0 +1,17 @@
+:root {
+  color-scheme: dark;
+  --noctalia-surface: #181211;
+  --noctalia-surface-variant: #251e1d;
+  --noctalia-primary: #ffb4a8;
+  --noctalia-on-surface: #ede0dd;
+  --noctalia-outline: #534341;
+}
+
+::selection {
+  background-color: #ffb4a855;
+  color: #ede0dd;
+}
+
+* {
+  scrollbar-color: #534341 #251e1d;
+}

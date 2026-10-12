@@ -1,0 +1,302 @@
+#!/usr/bin/env bash
+# Wählt die Desktop-Shell: Noctalia oder L-Shell. Es läuft immer genau eine.
+#
+#   shell-switch            Menü zeigen und zur gewählten Shell wechseln
+#   shell-switch start      beim Login: zuletzt gewählte Shell starten
+#   shell-switch to NAME    direkt wechseln (noctalia | l-shell)
+#   shell-switch msg ARGS   IPC-Befehl an die laufende Shell weitergeben
+#   shell-switch current    laufende Shell ausgeben
+#
+# Wechsel-Ablauf: alte Shell vollständig beenden (D-Bus-Namen frei), neue
+# starten, auf IPC-Antwort warten. Startet die neue nicht, läuft die andere
+# weiter bzw. wird wieder gestartet. Meldungen gehen über `hyprctl notify`,
+# nie über D-Bus: ohne laufende Shell würde notify-send sonst xfce4-notifyd
+# aktivieren, und der Name org.freedesktop.Notifications wäre blockiert.
+
+set -u
+
+SHELLS=(noctalia l-shell)
+LSHELL_REPO="$HOME/Code/Projekte/L-Shell"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/shell-switch"
+CHOICE_FILE="$STATE_DIR/choice"
+LOG_FILE="$STATE_DIR/log"
+RUNTIME_DIR="${XDG_RUNTIME_DIR:-/tmp}"
+SWITCH_LOCK="$RUNTIME_DIR/shell-switch.lock"
+START_TIMEOUT=20 # Sekunden, bis die neue Shell auf IPC antworten muss
+STOP_TIMEOUT=10  # Sekunden, bis die alte Shell nach SIGTERM weg sein muss
+
+label() {
+    case "$1" in
+        noctalia) echo "Noctalia" ;;
+        l-shell) echo "L-Shell" ;;
+    esac
+}
+
+other_shell() {
+    case "$1" in
+        noctalia) echo "l-shell" ;;
+        *) echo "noctalia" ;;
+    esac
+}
+
+log() {
+    mkdir -p "$STATE_DIR"
+    printf '[%s] %s\n' "$(date '+%F %T')" "$*" >>"$LOG_FILE"
+    if [ "$(stat -c %s "$LOG_FILE" 2>/dev/null || echo 0)" -gt 200000 ]; then
+        tail -n 500 "$LOG_FILE" >"$LOG_FILE.tmp" && mv "$LOG_FILE.tmp" "$LOG_FILE"
+    fi
+}
+
+# Icons: 1 = Info, 3 = Fehler, 5 = OK.
+notify() {
+    hyprctl notify "$1" "$2" 0 "Shell: $3" >/dev/null 2>&1 || true
+}
+
+# Ausführbare Datei einer Shell; bei L-Shell der zuletzt gebaute Build-Ordner.
+bin_for() {
+    case "$1" in
+        noctalia) command -v noctalia ;;
+        l-shell)
+            # Release starts much faster than a debug build (keybinds run `l-shell msg` each time).
+            if [ -x "$LSHELL_REPO/build-release/l-shell" ]; then
+                printf '%s\n' "$LSHELL_REPO/build-release/l-shell"
+                return 0
+            fi
+            local newest="" b
+            for b in "$LSHELL_REPO"/build-*/l-shell; do
+                [ -x "$b" ] || continue
+                if [ -z "$newest" ] || [ "$b" -nt "$newest" ]; then
+                    newest="$b"
+                fi
+            done
+            [ -n "$newest" ] && printf '%s\n' "$newest"
+            ;;
+        *) return 1 ;;
+    esac
+}
+
+# PID, die die Single-Instance-Sperre der Shell hält. Liest /proc/locks statt
+# selbst flock aufzurufen: eine Probe-Sperre während eines Starts würde die
+# neue Shell mit "already running" abbrechen lassen.
+lock_holder() {
+    local lock="$RUNTIME_DIR/$1-${WAYLAND_DISPLAY:-wayland-0}.lock" id
+    [ -e "$lock" ] || return 1
+    id="$(stat -c '%Hd %Ld %i' "$lock" | { read -r major minor ino; printf '%02x:%02x:%d' "$major" "$minor" "$ino"; })"
+    awk -v id="$id" '$2 == "FLOCK" && $6 == id { print $5; found = 1; exit } END { exit !found }' /proc/locks
+}
+
+running_shell() {
+    local s
+    for s in "${SHELLS[@]}"; do
+        if lock_holder "$s" >/dev/null; then
+            echo "$s"
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Lebt der Prozess? Zombies zählen als beendet.
+alive() {
+    local state
+    state="$(sed 's/.*) //' "/proc/$1/stat" 2>/dev/null | cut -d' ' -f1)"
+    [ -n "$state" ] && [ "$state" != "Z" ]
+}
+
+wait_gone() {
+    local pid="$1" tries="$2" i
+    for ((i = 0; i < tries; i++)); do
+        alive "$pid" || return 0
+        sleep 0.1
+    done
+    ! alive "$pid"
+}
+
+stop_shell() {
+    local pid
+    pid="$(lock_holder "$1")" || return 0
+    log "Stoppe $1 (PID $pid)"
+    kill -TERM "$pid" 2>/dev/null
+    wait_gone "$pid" $((STOP_TIMEOUT * 10)) && return 0
+    log "$1 reagiert nicht auf SIGTERM, sende SIGKILL"
+    kill -KILL "$pid" 2>/dev/null
+    wait_gone "$pid" 30
+}
+
+# Startet die Shell losgelöst und wartet, bis sie auf IPC antwortet.
+start_shell() {
+    local name="$1" bin pid i
+    bin="$(bin_for "$name")" || {
+        log "$name: Programm nicht gefunden"
+        return 1
+    }
+    log "Starte $name ($bin)"
+    # 9>&-: die Wechsel-Sperre nicht an die Shell vererben.
+    setsid "$bin" </dev/null >/dev/null 2>&1 9>&- &
+    pid=$!
+    for ((i = 0; i < START_TIMEOUT * 4; i++)); do
+        sleep 0.25
+        if ! alive "$pid"; then
+            log "$name hat sich direkt nach dem Start beendet"
+            return 1
+        fi
+        if "$bin" msg log-level-status >/dev/null 2>&1; then
+            ensure_notifications "$name" "$pid"
+            return
+        fi
+    done
+    log "$name antwortet nach ${START_TIMEOUT}s nicht, wird beendet"
+    kill -TERM "$pid" 2>/dev/null
+    wait_gone "$pid" $((STOP_TIMEOUT * 10)) || kill -KILL "$pid" 2>/dev/null
+    return 1
+}
+
+# Hat ein fremder Dienst (xfce4-notifyd, Plasma) org.freedesktop.Notifications
+# in der Lücke zwischen zwei Shells übernommen, bekommt die neue Shell den
+# Namen nicht. Dann fremden Dienst beenden und Shell einmal neu starten.
+ensure_notifications() {
+    local name="$1" pid="$2" owner="" i
+    for ((i = 0; i < 20; i++)); do
+        owner="$(busctl --user status org.freedesktop.Notifications 2>/dev/null | sed -n 's/^PID=//p')"
+        [ "$owner" = "$pid" ] && return 0
+        [ -n "$owner" ] && break
+        sleep 0.25
+    done
+    if [ -z "$owner" ]; then
+        log "$name: org.freedesktop.Notifications ist nicht belegt"
+        return 0
+    fi
+    if [ "${SHELL_SWITCH_RETRY:-0}" = 1 ]; then
+        log "$name: org.freedesktop.Notifications weiterhin bei PID $owner"
+        notify 3 6000 "Benachrichtigungen blockiert durch PID $owner"
+        return 0
+    fi
+    log "$name: fremder Dienst PID $owner hält org.freedesktop.Notifications, starte neu"
+    kill -TERM "$owner" 2>/dev/null
+    wait_gone "$owner" 30
+    kill -TERM "$pid" 2>/dev/null
+    wait_gone "$pid" $((STOP_TIMEOUT * 10)) || kill -KILL "$pid" 2>/dev/null
+    SHELL_SWITCH_RETRY=1 start_shell "$name"
+}
+
+save_choice() {
+    mkdir -p "$STATE_DIR"
+    echo "$1" >"$CHOICE_FILE"
+}
+
+# Nur ein Wechsel gleichzeitig (z. B. doppelter Tastendruck).
+take_switch_lock() {
+    exec 9>"$SWITCH_LOCK"
+    if ! flock -n 9; then
+        notify 1 2000 "Wechsel läuft bereits"
+        exit 1
+    fi
+}
+
+activate() {
+    local target="$1" fallback current
+    fallback="$(other_shell "$target")"
+    current="$(running_shell || true)"
+
+    if ! bin_for "$target" >/dev/null; then
+        log "$target ist nicht gebaut"
+        notify 3 5000 "$(label "$target") ist nicht gebaut"
+        # Läuft schon eine Shell, bleibt sie. Sonst (Login) Fallback starten.
+        [ -n "$current" ] && return 1
+    else
+        stop_shell "$fallback" || {
+            log "$fallback ließ sich nicht beenden, Wechsel abgebrochen"
+            notify 3 5000 "$(label "$fallback") ließ sich nicht beenden"
+            return 1
+        }
+        if lock_holder "$target" >/dev/null; then
+            save_choice "$target"
+            [ "$current" = "$target" ] && notify 1 2000 "$(label "$target") läuft bereits"
+            return 0
+        fi
+        if start_shell "$target"; then
+            save_choice "$target"
+            log "Aktiv: $target"
+            notify 5 2500 "$(label "$target") aktiv"
+            return 0
+        fi
+        notify 3 6000 "$(label "$target") startet nicht, siehe $LOG_FILE"
+    fi
+
+    if start_shell "$fallback"; then
+        save_choice "$fallback"
+        log "Fallback aktiv: $fallback"
+        notify 1 4000 "Zurück zu $(label "$fallback")"
+        return 1
+    fi
+    log "Keine Shell konnte starten"
+    notify 3 10000 "Keine Shell konnte starten, siehe $LOG_FILE"
+    return 1
+}
+
+pick_shell() {
+    local current entries="" s line choice
+    current="$(running_shell || true)"
+    for s in "${SHELLS[@]}"; do
+        line="$(label "$s")"
+        [ "$s" = "$current" ] && line="$line  (aktiv)"
+        bin_for "$s" >/dev/null || line="$line  (nicht gebaut)"
+        entries+="$line"$'\n'
+    done
+    if command -v fuzzel >/dev/null 2>&1; then
+        choice="$(printf '%s' "$entries" | fuzzel --dmenu --index --prompt 'Shell> ' --lines 2 --width 30)"
+    else
+        choice="$(printf '%s' "$entries" | rofi -dmenu -format i -p 'Shell')"
+    fi
+    [[ "$choice" =~ ^[0-9]+$ ]] || return 1
+    echo "${SHELLS[$choice]}"
+}
+
+cmd_msg() {
+    local s bin
+    if s="$(running_shell)" && bin="$(bin_for "$s")"; then
+        "$bin" msg "$@" && exit 0
+    fi
+    # Sperren darf nie ausfallen, auch nicht mitten im Wechsel.
+    if [ "$*" = "session lock" ]; then
+        exec hyprlock
+    fi
+    exit 1
+}
+
+case "${1:-menu}" in
+    menu)
+        target="$(pick_shell)" || exit 0
+        take_switch_lock
+        activate "$target"
+        ;;
+    start)
+        take_switch_lock
+        running_shell >/dev/null && exit 0
+        target="$(cat "$CHOICE_FILE" 2>/dev/null || true)"
+        case "$target" in noctalia | l-shell) ;; *) target="noctalia" ;; esac
+        activate "$target"
+        ;;
+    to)
+        case "${2:-}" in
+            noctalia | l-shell) ;;
+            *)
+                echo "Verwendung: shell-switch to noctalia|l-shell" >&2
+                exit 2
+                ;;
+        esac
+        take_switch_lock
+        activate "$2"
+        ;;
+    msg)
+        shift
+        cmd_msg "$@"
+        ;;
+    current)
+        running_shell || exit 1
+        ;;
+    *)
+        echo "Verwendung: shell-switch [menu|start|to NAME|msg ARGS|current]" >&2
+        exit 2
+        ;;
+esac

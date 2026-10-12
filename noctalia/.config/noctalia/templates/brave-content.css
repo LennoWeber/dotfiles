@@ -1,0 +1,17 @@
+:root {
+  color-scheme: dark;
+  --noctalia-surface: {{colors.surface.default.hex}};
+  --noctalia-surface-variant: {{colors.surface_container.default.hex}};
+  --noctalia-primary: {{colors.primary.default.hex}};
+  --noctalia-on-surface: {{colors.on_surface.default.hex}};
+  --noctalia-outline: {{colors.outline.default.hex}};
+}
+
+::selection {
+  background-color: {{colors.primary.default.hex}}55;
+  color: {{colors.on_surface.default.hex}};
+}
+
+* {
+  scrollbar-color: {{colors.outline.default.hex}} {{colors.surface_container.default.hex}};
+}

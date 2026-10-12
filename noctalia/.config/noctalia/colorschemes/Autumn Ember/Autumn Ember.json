@@ -1,0 +1,58 @@
+{
+  "dark": {
+    "mPrimary": "#D27942",
+    "mOnPrimary": "#211A16",
+    "mSecondary": "#B48E59",
+    "mOnSecondary": "#211A16",
+    "mTertiary": "#86996D",
+    "mOnTertiary": "#211A16",
+    "mError": "#C85A5A",
+    "mOnError": "#211A16",
+    "mSurface": "#211A16",
+    "mOnSurface": "#D5C8BA",
+    "mSurfaceVariant": "#302621",
+    "mOnSurfaceVariant": "#B8A796",
+    "mOutline": "#56463E",
+    "mShadow": "#0A0807",
+    "mHover": "#3E322C",
+    "mOnHover": "#E9DED1",
+    "terminal": {
+      "foreground": "#D5C8BA",
+      "background": "#211A16",
+      "selectionFg": "#E9DED1",
+      "selectionBg": "#4D3D35",
+      "cursorText": "#211A16",
+      "cursor": "#D27942",
+      "normal": {"black": "#302621", "red": "#C85A5A", "green": "#86996D", "yellow": "#C8A366", "blue": "#6B859E", "magenta": "#9D748E", "cyan": "#6A9B93", "white": "#B8A796"},
+      "bright": {"black": "#56463E", "red": "#DB7272", "green": "#9CB081", "yellow": "#E1BA76", "blue": "#809BB6", "magenta": "#B586A4", "cyan": "#7CACA3", "white": "#E9DED1"}
+    }
+  },
+  "light": {
+    "mPrimary": "#964C1B",
+    "mOnPrimary": "#F5EFE8",
+    "mSecondary": "#78582B",
+    "mOnSecondary": "#F5EFE8",
+    "mTertiary": "#4D6332",
+    "mOnTertiary": "#F5EFE8",
+    "mError": "#A02929",
+    "mOnError": "#F5EFE8",
+    "mSurface": "#F5EFE8",
+    "mOnSurface": "#302621",
+    "mSurfaceVariant": "#E6DCD1",
+    "mOnSurfaceVariant": "#56463E",
+    "mOutline": "#B8A796",
+    "mShadow": "#0A0807",
+    "mHover": "#DCD0C3",
+    "mOnHover": "#211A16",
+    "terminal": {
+      "foreground": "#302621",
+      "background": "#F5EFE8",
+      "selectionFg": "#211A16",
+      "selectionBg": "#CBBFAD",
+      "cursorText": "#F5EFE8",
+      "cursor": "#964C1B",
+      "normal": {"black": "#E6DCD1", "red": "#A02929", "green": "#4D6332", "yellow": "#8F6E22", "blue": "#334A61", "magenta": "#693E58", "cyan": "#366059", "white": "#56463E"},
+      "bright": {"black": "#B8A796", "red": "#C85A5A", "green": "#86996D", "yellow": "#C8A366", "blue": "#6B859E", "magenta": "#9D748E", "cyan": "#6A9B93", "white": "#302621"}
+    }
+  }
+}

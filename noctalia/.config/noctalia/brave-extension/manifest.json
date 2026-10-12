@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Noctalia Brave Theme",
+  "description": "Dynamic browser chrome colors from Noctalia",
+  "version": "1.0.0",
+  "permissions": ["theme"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": ["content.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["colors.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "chillpill-blob",
+    "name": "ChillPill Blob Bar",
+    "version": "1.0.0",
+    "author": "lenno",
+    "description": "An organic, morphing blob-shaped status bar inspired by ChillPill-Shell. Fully integrated with Noctalia theming.",
+    "minNoctaliaVersion": "1.0.0",
+    "entryPoints": {
+        "main": "Main.qml"
+    },
+    "metadata": {
+        "category": "bar",
+        "tags": ["bar", "blob", "animation", "pill", "chillpill"]
+    }
+}

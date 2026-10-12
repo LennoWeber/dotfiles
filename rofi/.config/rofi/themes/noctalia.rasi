@@ -1,0 +1,20 @@
+/* Rofi colors — Generated from active Noctalia palette (m* tokens) */
+
+* {
+    /* was @theme "tokyo": fg0, cyan, red, blue */
+    fg0: #ede0ddff;
+    cyan: #e7bdb6ff;
+    red: #ffb4abff;
+    blue: #ffb4a8ff;
+
+    window-border: #ffb4a8ff;
+    window-bg: #181211eb;
+    mainbox-bg: #251e1dff;
+    inputbar-bg: #dec48cff;
+    inputbar-border: #534341cc;
+    list-bg: #251e1dff;
+    element-bg: #251e1dff;
+    select-bg: #ffb4a838;
+    message-border: #534341cc;
+    message-bg: #181211e6;
+}

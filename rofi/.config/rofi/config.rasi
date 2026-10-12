@@ -1,0 +1,121 @@
+configuration {
+    modes: "drun";
+    sorting-method: "normal";
+    show-icons: true;
+    matching: "regex";
+    drun-match-fields: "name";
+    display-run: "menu:";
+    display-drun: "Launch:";
+}
+
+@import "themes/noctalia.rasi"
+
+* {
+    font: "Iosevka Nerd Font 11";
+    background-color: transparent;
+    text-color: @fg0;
+
+    margin: 0px;
+    padding: 0px;
+    spacing: 0px;
+}
+
+/* ===== Window ===== */
+window {
+    location: center;
+    width: 500;
+    y-offset: -20;
+
+    border-radius: 0px;
+    border: 2px;
+    border-color: @window-border;
+
+    background-color: @window-bg;
+}
+
+/* ===== Main container ===== */
+mainbox {
+    padding: 0px;
+    background-color: @mainbox-bg;
+}
+
+/* ===== Input bar ===== */
+inputbar {
+    background-color: @inputbar-bg;
+    border-radius: 1px;
+    border: 1px;
+    border-color: @inputbar-border;
+
+    padding: 8px 16px;
+    spacing: 8px;
+}
+
+prompt {
+    text-color: @cyan;
+    background-color: transparent;
+}
+
+entry {
+    text-color: @fg0;
+    placeholder: "search";
+    placeholder-color: @cyan;
+    background-color: transparent;
+}
+
+/* ===== List ===== */
+listview {
+    background-color: @list-bg;
+    margin: 10px 0 0;
+
+    columns: 1;
+    lines: 6;
+    fixed-height: false;
+}
+
+/* ===== Elements ===== */
+element {
+    padding: 10px 6px;
+    spacing: 6px;
+    border-radius: 1px;
+
+    background-color: @element-bg;
+}
+
+element normal urgent {
+    text-color: @red;
+}
+
+element normal active {
+    text-color: @blue;
+}
+
+element selected normal,
+element selected active {
+    background-color: @select-bg;
+}
+
+/* ===== Icons & text ===== */
+element-icon {
+    size: 1em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color: inherit;
+    background-color: transparent;
+}
+
+/* ===== Message box ===== */
+message {
+    margin: 12px 0 0;
+    border-radius: 12px;
+    border: 1px;
+    border-color: @message-border;
+
+    background-color: @message-bg;
+}
+
+textbox {
+    padding: 8px 24px;
+    background-color: @message-bg;
+}

@@ -1,0 +1,26 @@
+# Yazi config – OnlyOffice für Dokumente beim Öffnen aus Yazi
+# Siehe https://yazi-rs.github.io/docs/configuration/yazi/
+
+# Editor für Code/Text: nvim
+# Eigenen Opener für Dokumente mit OnlyOffice
+[opener]
+edit = [
+	{ run = "nvim %s1", desc = "nvim", for = "unix", block = true },
+]
+office = [
+	{ run = "onlyoffice-desktopeditors %s1", desc = "OnlyOffice", for = "unix", orphan = true },
+]
+
+# Dokumente mit OnlyOffice öffnen
+[open]
+prepend_rules = [
+	{ mime = "application/pdf", use = [ "office", "reveal" ] },
+	{ mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document", use = [ "office", "reveal" ] },
+	{ mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use = [ "office", "reveal" ] },
+	{ mime = "application/vnd.openxmlformats-officedocument.presentationml.presentation", use = [ "office", "reveal" ] },
+	{ mime = "application/msword", use = [ "office", "reveal" ] },
+	{ mime = "application/vnd.ms-excel", use = [ "office", "reveal" ] },
+	{ mime = "text/csv", use = [ "office", "reveal" ] },
+	{ mime = "text/markdown", use = [ "office", "reveal" ] },
+	{ mime = "application/postscript", use = [ "office", "reveal" ] },
+]

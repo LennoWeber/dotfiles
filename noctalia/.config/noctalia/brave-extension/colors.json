@@ -1,0 +1,13 @@
+{
+  "mode": "dark",
+  "surface": "#181211",
+  "surface_variant": "#251e1d",
+  "surface_high": "#dec48c",
+  "primary": "#ffb4a8",
+  "secondary": "#e7bdb6",
+  "tertiary": "#dec48c",
+  "on_surface": "#ede0dd",
+  "on_surface_variant": "#d8c2be",
+  "outline": "#534341",
+  "error": "#ffb4ab"
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "builtin",
+    "source": "rhel_old",
+    "padding": {
+      "top": 1,
+      "right": 3
+    }
+  },
+  "display": {
+    "color": {
+      "keys": "#ffb4a8",
+      "output": "#ede0dd",
+      "separator": "#735c5a",
+      "title": "#e7bdb6"
+    }
+  },
+  "modules": [
+    "title",
+    "separator",
+    {
+      "type": "os",
+      "key": " OS",
+      "keyColor": "#ffb4a8"
+    },
+    {
+      "type": "host",
+      "key": "󰌢 PC",
+      "keyColor": "#dec48c"
+    },
+    {
+      "type": "kernel",
+      "key": " Kernel",
+      "keyColor": "#e7bdb6"
+    },
+    {
+      "type": "uptime",
+      "key": "󰅐 Uptime",
+      "keyColor": "#ffb4ab"
+    },
+    {
+      "type": "packages",
+      "key": "󰏖 Pkgs",
+      "keyColor": "#ffb4a8"
+    },
+    {
+      "type": "shell",
+      "key": " Shell",
+      "keyColor": "#dec48c"
+    },
+    {
+      "type": "wm",
+      "key": " WM",
+      "keyColor": "#e7bdb6"
+    },
+    {
+      "type": "terminal",
+      "key": " Term",
+      "keyColor": "#ffb4a8"
+    },
+    {
+      "type": "cpu",
+      "key": " CPU",
+      "keyColor": "#dec48c"
+    },
+    {
+      "type": "memory",
+      "key": " Mem",
+      "keyColor": "#ffb4ab"
+    },
+    {
+      "type": "battery",
+      "key": "󰁹 Batt",
+      "keyColor": "#e7bdb6"
+    },
+    "break",
+    "colors"
+  ]
+}
