@@ -63,6 +63,7 @@ dotfiles/
 | Paket | Ziel |
 |---|---|
 | `alacritty` `btop` `fastfetch` `foot` `ghostty` `kitty` `nvim` `rofi` `sway` `vicinae` `walker` `waybar` `wezterm` `wlogout` `yazi` `zathura` `zed` `hypr` `noctalia` | `~/.config/<paket>` |
+| `l-shell` | `~/.config/l-shell/dotfiles-templates.toml` – die persönlichen Theme-Templates (fuzzel, Brave, fastfetch, starship) auch unter [L-Shell](https://github.com/LennoWeber/L-Shell) |
 | `quickshell` | `~/.config/quickshell/personal-shell` |
 | `starship` | `~/.config/starship.toml` |
 | `doom` | `~/.doom.d` |

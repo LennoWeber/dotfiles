@@ -1,0 +1,26 @@
+# Persönliche Theme-Templates auch unter L-Shell (dieselben wie in ~/.config/noctalia/user-templates.toml).
+# L-Shell lädt jede *.toml in ~/.config/l-shell/, die eigene config.toml und die Einstellungen bleiben unberührt.
+# Die Template- und Skriptdateien liegen im Paket "noctalia" (stow noctalia).
+
+[theme.templates.user.fuzzel-solid]
+input_path = "~/.config/noctalia/templates/fuzzel.conf"
+output_path = "~/.config/fuzzel/themes/noctalia"
+post_hook = "~/.config/noctalia/scripts/apply-fuzzel-theme.sh"
+
+[theme.templates.user.brave-colors]
+input_path = "~/.config/noctalia/templates/brave-colors.json"
+output_path = "~/.config/noctalia/brave-extension/colors.json"
+post_hook = "~/.config/noctalia/scripts/apply-brave-theme.sh"
+
+[theme.templates.user.brave-content]
+input_path = "~/.config/noctalia/templates/brave-content.css"
+output_path = "~/.config/noctalia/brave-extension/content.css"
+post_hook = "~/.config/noctalia/scripts/apply-brave-theme.sh"
+
+[theme.templates.user.fastfetch]
+input_path = "~/.config/fastfetch/config.jsonc.template"
+output_path = "~/.config/fastfetch/config.jsonc"
+
+[theme.templates.user.starship-noctalia]
+input_path = "~/.config/starship.toml.template"
+output_path = "~/.config/starship.toml"
