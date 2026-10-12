@@ -81,7 +81,11 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_QPA_PLATFORMTHEME_QT6", "qt6ct")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 
-hl.env("GTK_THEME", "adw-gtk3-dark")
+-- Kein GTK_THEME: es erzwingt Dunkel auch im hellen Modus. Hell/Dunkel setzt die Shell über
+-- gsettings (adw-gtk3 bzw. adw-gtk3-dark) passend zum Theme-Modus.
+
+-- For Noctalia Color templates (vor LOOK AND FEEL, damit general.col unten gewinnt)
+require("noctalia").apply_theme()
 
 -----------------------
 ---- LOOK AND FEEL ----
@@ -228,6 +232,8 @@ hl.bind(mainMod .. " + M", hl.dsp.exit())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
+-- wie Cmd+Leertaste auf dem Mac
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
@@ -301,8 +307,10 @@ hl.bind("XF86ScreenSaver", hl.dsp.exec_cmd(shell .. " session lock"))
 -- Shell-Auswahl: Noctalia oder L-Shell
 hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd("/home/lenno/.local/bin/shell-switch"))
 
--- Übersicht aller Fenster (Mission Control, nur L-Shell)
-hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(shell .. " overview"))
+-- Übersicht aller Schreibtische auf allen Monitoren (Expo, nur L-Shell)
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(shell .. " expo"))
+-- Mission Control: Fenster des aktuellen Schreibtischs (nur L-Shell)
+hl.bind(mainMod .. " + SHIFT + O", hl.dsp.exec_cmd(shell .. " overview"))
 
 -- Noctalia v5 Panels
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(shell .. " settings-toggle"))
@@ -311,7 +319,8 @@ hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd(shell .. " settings-toggle"))
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(shell .. " panel-toggle session"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(shell .. " session lock"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(shell .. " theme-mode-toggle"))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(shell .. " panel-toggle control-center notifications"))
+-- Mitteilungszentrale (L-Shell); shell-switch übersetzt das für Noctalia ins Kontrollzentrum
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(shell .. " panel-toggle notification-center"))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(shell .. " panel-toggle wallpaper"))
 
 ------------------------
@@ -349,10 +358,12 @@ end
 hl.layer_rule({
 	name = "noctalia",
 	match = {
-		namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher)$",
+		-- island/expo gibt es nur in L-Shell; L-Shell nutzt dieselben noctalia-Namespaces
+		namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher|island|expo)$",
 	},
 	no_anim = true,
-	ignore_alpha = 0.5,
+	-- unter dem leichtesten Glas-Tint (Dock: 0.45), über den weichen Schatten: Glas wird geblurrt, Schatten nicht
+	ignore_alpha = 0.4,
 	blur = true,
 	blur_popups = true,
 })
@@ -363,7 +374,5 @@ hl.layer_rule({
 	ignore_alpha = 0.5,
 })
 
--- Rahmenfarben kommen nicht mehr aus dem Noctalia-Theme (macOS-Look, siehe general.col)
-
--- For Noctalia Color templates
-require("noctalia").apply_theme()
+-- Rahmenfarben kommen nicht aus dem Theme (macOS-Look, siehe general.col): apply_theme() läuft deshalb
+-- vor LOOK AND FEEL und liefert nur noch die Gruppen-Farben.

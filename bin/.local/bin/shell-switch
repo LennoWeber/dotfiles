@@ -252,10 +252,30 @@ pick_shell() {
     echo "${SHELLS[$choice]}"
 }
 
+# Befehle, die nur L-Shell kennt, in das Noctalia-Gegenstück übersetzen.
+translate_for() {
+    local shell="$1"
+    shift
+    if [ "$shell" = noctalia ]; then
+        case "$*" in
+            "panel-toggle notification-center") set -- panel-toggle control-center notifications ;;
+            expo) set -- overview ;;
+        esac
+    fi
+    printf '%s\0' "$@"
+}
+
 cmd_msg() {
-    local s bin
+    local s bin msg_bin
+    local -a args
     if s="$(running_shell)" && bin="$(bin_for "$s")"; then
-        "$bin" msg "$@" && exit 0
+        mapfile -d '' -t args < <(translate_for "$s" "$@")
+        # L-Shell bringt einen schlanken IPC-Client mit (kein Shell-Start pro Tastendruck).
+        msg_bin="$(dirname "$bin")/l-shell-msg"
+        if [ "$s" = l-shell ] && [ -x "$msg_bin" ]; then
+            "$msg_bin" "${args[@]}" 2>/dev/null && exit 0
+        fi
+        "$bin" msg "${args[@]}" && exit 0
     fi
     # Sperren darf nie ausfallen, auch nicht mitten im Wechsel.
     if [ "$*" = "session lock" ]; then
