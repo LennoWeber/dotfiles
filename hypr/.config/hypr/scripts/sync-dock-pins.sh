@@ -19,7 +19,7 @@ MARKER = "X-Dock-Pinned"
 CURSOR_ICON = Path.home() / ".local/share/icons/cursor-dock.png"
 
 PINNED = [
-    {"class": "kitty", "source": "kitty.desktop"},
+    {"class": "com.mitchellh.ghostty", "source": "com.mitchellh.ghostty.desktop"},
     {"class": "zen", "source": "zen-browser.desktop"},
     {"class": "cursor", "source": "cursor.desktop"},
     {"class": "Code", "source": "code.desktop"},

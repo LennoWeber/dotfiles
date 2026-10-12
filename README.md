@@ -20,7 +20,7 @@
 | **Compositor** | [Hyprland](https://hyprland.org) (Lua-Config) + hyprlock, hypridle |
 | **Shell / Bar** | [Noctalia](https://github.com/noctalia-dev/noctalia-shell) auf [Quickshell](https://quickshell.outfoxxed.me), eigene `personal-shell`, Waybar |
 | **Launcher** | rofi, walker, vicinae, wlogout |
-| **Terminal** | kitty, ghostty, foot, alacritty, wezterm |
+| **Terminal** | **Ghostty** (Standard, eingerichtet wie Terminal auf dem Mac), kitty, foot, alacritty, wezterm |
 | **Editor** | Neovim ([LazyVim](https://www.lazyvim.org)), Doom Emacs, Zed |
 | **CLI** | starship, yazi, btop, fastfetch, zathura |
 | **Theming** | Noctalia-Paletten → werden per Skript in Terminal, rofi, Browser, Dock usw. übernommen |
@@ -42,6 +42,19 @@ stow */                    # … oder alles
 
 Stow legt für jedes Paket Symlinks von `~` in dieses Repo an. Bereits existierende
 Dateien blockieren das – vorher wegsichern. Entfernen geht mit `stow -D <paket>`.
+
+## Terminal: Ghostty wie auf dem Mac
+
+Ghostty ist das Standard-Terminal: `Super+Enter`, `$TERMINAL` (für L-Shell, Noctalia und Programme mit
+`Terminal=true`), `xdg-terminal-exec` (`~/.config/xdg-terminals.list`, „Im Terminal öffnen“) und Yazi auf
+`Super+Y`. Die Config (`ghostty/.config/ghostty/config`) orientiert sich an Terminal.app:
+
+- SF Mono, falls installiert, sonst Menlos Vorlage DejaVu Sans Mono; 12 pt; Nerd-Symbole bringt Ghostty mit
+- Blockcursor ohne Blinken, 80×24 Zeichen für schwebende Fenster, Mauszeiger verschwindet beim Tippen
+- eigene Titelleiste in der Farbe des Terminals mit Tabs und Ampel-Knöpfen links (Farben aus dem
+  L-Shell-GTK-Theme, Reihenfolge per `gsettings … button-layout 'close,maximize:'` im Autostart)
+- Farben und Hell/Dunkel folgen der Shell (L-Shell und Noctalia schreiben `themes/noctalia`)
+- `Strg+C` kopiert, wenn etwas markiert ist, sonst bricht es ab (wie in der kitty-Config)
 
 ## Struktur
 

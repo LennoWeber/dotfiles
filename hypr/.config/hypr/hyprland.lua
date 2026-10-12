@@ -34,7 +34,8 @@ hl.monitor({
 ---- MY PROGRAMS ----
 ---------------------
 
-local terminal = "alacritty"
+-- Ghostty wie Terminal auf dem Mac (Config: ~/.config/ghostty/config)
+local terminal = "ghostty"
 local fileManager = "nemo"
 local browser = "/home/lenno/.local/bin/zen"
 local mainMod = "SUPER"
@@ -52,6 +53,11 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("wl-paste --watch cliphist store &")
 	hl.exec_cmd(
 		"gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark; gsettings set org.cinnamon.desktop.interface icon-theme Papirus-Dark"
+	)
+	-- Fensterknöpfe links wie auf dem Mac (rot schließen, grün maximieren; Minimieren gibt es in Hyprland nicht).
+	-- Die Ampelfarben setzt das GTK-Theme von L-Shell.
+	hl.exec_cmd(
+		"gsettings set org.gnome.desktop.wm.preferences button-layout 'close,maximize:'"
 	)
 	hl.exec_cmd("hyprpm reload n")
 	-- zuletzt gewählte Shell (Noctalia oder L-Shell), Fallback auf die andere
@@ -74,6 +80,8 @@ hl.env("PATH", "/home/lenno/.local/bin:" .. (os.getenv("PATH") or "/usr/local/bi
 hl.env("XCURSOR_SIZE", "18")
 hl.env("HYPRCURSOR_SIZE", "18")
 hl.env("XCURSOR_THEME", "Bibata-Modern-Classic")
+-- Standard-Terminal für Programme, die eins öffnen (L-Shell, Noctalia, Desktop-Dateien mit Terminal=true)
+hl.env("TERMINAL", "ghostty")
 
 hl.env("QT_QPA_PLATFORM", "wayland")
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "wayland")
@@ -240,7 +248,7 @@ hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(shell .. " screenshot-region"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("~/.local/bin/toggle-laptop-rotation.sh"))
-hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("kitty yazi"))
+hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd(terminal .. " -e yazi"))
 
 -- Fokus & Workspaces
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))

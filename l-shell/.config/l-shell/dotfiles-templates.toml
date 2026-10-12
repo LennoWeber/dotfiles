@@ -2,6 +2,11 @@
 # L-Shell lädt jede *.toml in ~/.config/l-shell/, die eigene config.toml und die Einstellungen bleiben unberührt.
 # Die Template- und Skriptdateien liegen im Paket "noctalia" (stow noctalia).
 
+# Eingebaute Vorlagen: GTK, Qt und KDE wie der L-Shell-Standard, dazu Ghostty (Standard-Terminal),
+# damit es auch unter L-Shell den Farben und dem Hell-/Dunkelmodus folgt.
+[theme.templates]
+builtin_ids = ["gtk3", "gtk4", "qt", "kcolorscheme", "ghostty"]
+
 [theme.templates.user.fuzzel-solid]
 input_path = "~/.config/noctalia/templates/fuzzel.conf"
 output_path = "~/.config/fuzzel/themes/noctalia"
