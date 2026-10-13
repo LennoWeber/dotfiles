@@ -314,6 +314,8 @@ hl.bind("XF86ScreenSaver", hl.dsp.exec_cmd(shell .. " session lock"))
 
 -- Shell-Auswahl: Noctalia oder L-Shell
 hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd("/home/lenno/.local/bin/shell-switch"))
+-- Design-Menü von L-Shell: alle eingebauten Systeme, ein Klick schaltet um
+hl.bind(mainMod .. " + ALT + D", hl.dsp.exec_cmd(shell .. " panel-toggle design"))
 
 -- Übersicht aller Schreibtische auf allen Monitoren (Expo, nur L-Shell)
 hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(shell .. " expo"))
@@ -384,3 +386,17 @@ hl.layer_rule({
 
 -- Rahmenfarben kommen nicht aus dem Theme (Slate, siehe general.col): apply_theme() läuft deshalb
 -- vor LOOK AND FEEL und liefert nur noch die Gruppen-Farben.
+
+-- L-Shell: Fensterstil des aktiven Designs (Radius, Rahmen, Abstände, Schatten). L-Shell schreibt die Datei bei
+-- jedem Designwechsel; geladen nur, solange L-Shell die gewählte Shell ist. Steht zuletzt, damit sie gewinnt.
+do
+	local home = os.getenv("HOME") or ""
+	local choice = io.open(home .. "/.local/state/shell-switch/choice", "r")
+	local shellChoice = choice and choice:read("*l") or ""
+	if choice then
+		choice:close()
+	end
+	if shellChoice == "l-shell" then
+		pcall(dofile, home .. "/.local/state/l-shell/hyprland-design.lua")
+	end
+end
