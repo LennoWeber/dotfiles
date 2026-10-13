@@ -2,7 +2,6 @@
 padding = { x = 10, y = 6 }
 
 [general]
-import = ["~/.config/alacritty/themes/noctalia.toml"]
 
 [font]
 size = 12.0

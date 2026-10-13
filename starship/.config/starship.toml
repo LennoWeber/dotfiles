@@ -2,15 +2,15 @@
 palette = "noctalia"
 
 format = """
-[](sapphire)\
+[](color_primary)\
 $os\
 $username\
-[](bg:teal fg:sapphire)\
+[](bg:color_secondary fg:color_primary)\
 $directory\
-[](fg:teal bg:mauve)\
+[](fg:color_secondary bg:color_tertiary)\
 $git_branch\
 $git_status\
-[](fg:mauve bg:surface2)\
+[](fg:color_tertiary bg:color_surface)\
 $c\
 $elixir\
 $elm\
@@ -25,26 +25,26 @@ $bun\
 $nim\
 $rust\
 $scala\
-[](fg:surface2 bg:overlay1)\
+[](fg:color_surface bg:color_muted)\
 $docker_context\
-[](fg:overlay1 bg:surface0)\
+[](fg:color_muted bg:color_deep)\
 $time\
-[ ](fg:surface0)\
+[ ](fg:color_deep)\
 """
 
 [username]
 show_always = true
-style_user = "bg:sapphire fg:crust bold"
-style_root = "bg:sapphire fg:maroon bold"
+style_user = "bg:color_primary fg:color_on_primary bold"
+style_root = "bg:color_primary fg:color_error bold"
 format = '[$user ]($style)'
 disabled = false
 
 [os]
-style = "bg:sapphire fg:crust"
+style = "bg:color_primary fg:color_on_primary"
 disabled = true
 
 [directory]
-style = "bg:teal fg:crust"
+style = "bg:color_secondary fg:color_on_secondary"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -57,150 +57,122 @@ truncation_symbol = "…/"
 
 [c]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [cpp]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [docker_context]
 symbol = " "
-style = "bg:overlay1 fg:text"
+style = "bg:color_muted fg:color_on_muted"
 format = '[ $symbol $context ]($style)'
 
 [elixir]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [elm]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [git_branch]
 symbol = ""
-style = "bg:mauve fg:crust bold"
+style = "bg:color_tertiary fg:color_on_tertiary bold"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:mauve fg:crust"
+style = "bg:color_tertiary fg:color_on_tertiary"
 format = '[$all_status$ahead_behind ]($style)'
 
 [golang]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [gradle]
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [haskell]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [java]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [julia]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [maven]
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [bun]
 symbol = ""
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [nim]
 symbol = "󰆥 "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [rust]
 symbol = ""
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [scala]
 symbol = " "
-style = "bg:surface2 fg:text"
+style = "bg:color_surface fg:color_on_surface"
 format = '[ $symbol ($version) ]($style)'
 
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:surface0 fg:subtext1"
+style = "bg:color_deep fg:color_on_deep"
 format = '[ ♥ $time ]($style)'
 
 # >>> NOCTALIA STARSHIP PALETTE >>>
 [palettes.noctalia]
-color_primary = "#ffb4a8"
-color_on_primary = "#5f150d"
-color_secondary = "#e7bdb6"
-color_on_secondary = "#442925"
-color_tertiary = "#dec48c"
-color_on_tertiary = "#3e2e04"
-color_error = "#ffb4ab"
-color_surface = "#251e1d"
-color_on_surface = "#ede0dd"
-color_muted = "#2e0600"
-color_on_muted = "#d8c2be"
-color_deep = "#181207"
-color_on_deep = "#ede0dd"
-blue = "#ffb4a8"
-red = "#ffb4ab"
-green = "#dec48c"
-yellow = "#e7bdb6"
-cyan = "#dec48c"
-magenta = "#e7bdb6"
-white = "#ede0dd"
-black = "#181211"
-rosewater = "#dec48c"
-flamingo = "#e7bdb6"
-pink = "#ffb4a8"
-mauve = "#ffb4a8"
-maroon = "#ffb4ab"
-peach = "#e7bdb6"
-teal = "#dec48c"
-sky = "#dec48c"
-sapphire = "#ffb4a8"
-lavender = "#e7bdb6"
-text = "#ede0dd"
-subtext1 = "#d8c2be"
-subtext0 = "#534341"
-overlay2 = "#534341"
-overlay1 = "#d8c2be"
-overlay0 = "#251e1d"
-surface2 = "#251e1d"
-surface1 = "#181211"
-surface0 = "#181211"
-base = "#181211"
-mantle = "#251e1d"
-crust = "#5f150d"
-color_fg0 = "#ede0dd"
-color_bg1 = "#181211"
-color_bg3 = "#534341"
-color_blue = "#ffb4a8"
-color_aqua = "#dec48c"
-color_green = "#dec48c"
-color_orange = "#ffb4ab"
-color_purple = "#e7bdb6"
-color_red = "#ffb4ab"
-color_yellow = "#e7bdb6"
+# Dynamic Noctalia Material Theme Colors
+color_primary       = "#c7bfff"
+color_on_primary    = "#2d1a85"
+color_secondary     = "#c8c1f0"
+color_on_secondary  = "#302b51"
+color_tertiary      = "#ffade2"
+color_on_tertiary   = "#5e044d"
+color_error         = "#ffb4ab"
+
+color_surface       = "#49446c"
+color_on_surface    = "#bab3e1"
+color_muted         = "#474552"
+color_on_muted      = "#c9c4d4"
+color_deep          = "#2a2930"
+color_on_deep       = "#e5e1ea"
+
+# Fallbacks for standard names
+blue      = "#c7bfff"
+red       = "#ffb4ab"
+green     = "#ffade2"
+yellow    = "#c8c1f0"
+cyan      = "#c8c1f0"
+magenta   = "#c7bfff"
+white     = "#e5e1ea"
+black     = "#141319"
 # <<< NOCTALIA STARSHIP PALETTE <<<
