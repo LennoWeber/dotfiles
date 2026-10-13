@@ -103,10 +103,10 @@ hl.config({
 	general = {
 		gaps_in = 5,
 		gaps_out = 10,
-		-- macOS-Look: feine neutrale Haarlinie statt farbigem Rahmen
+		-- L-Shell Slate: 1px-Haarlinie; das aktive Fenster trägt das Bernstein-Signal (siehe L-Shell DESIGN.md)
 		border_size = 1,
 		col = {
-			active_border = "rgba(ffffff26)",
+			active_border = "rgba(f2b04b59)",
 			inactive_border = "rgba(ffffff12)",
 		},
 		resize_on_border = false,
@@ -120,13 +120,13 @@ hl.config({
 		active_opacity = 1.0,
 		inactive_opacity = 1.0,
 
-		-- große, weiche Schatten wie bei macOS
+		-- Slate-Schatten: weich, kurz nach unten, wie bei Island, Dock und Panels
 		shadow = {
 			enabled = true,
-			range = 28,
+			range = 22,
 			render_power = 3,
-			offset = "0 8",
-			color = "rgba(00000080)",
+			offset = "0 6",
+			color = "rgba(00000057)",
 		},
 
 		-- helles "Vibrancy"-Blur für Leiste, Dock, Panels
@@ -370,7 +370,7 @@ hl.layer_rule({
 		namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher|island|expo)$",
 	},
 	no_anim = true,
-	-- unter dem leichtesten Glas-Tint (Dock: 0.45), über den weichen Schatten: Glas wird geblurrt, Schatten nicht
+	-- unter dem Slate-Tint (0.84), über den weichen Schatten: Flächen werden geblurrt, Schatten nicht
 	ignore_alpha = 0.4,
 	blur = true,
 	blur_popups = true,
@@ -382,5 +382,5 @@ hl.layer_rule({
 	ignore_alpha = 0.5,
 })
 
--- Rahmenfarben kommen nicht aus dem Theme (macOS-Look, siehe general.col): apply_theme() läuft deshalb
+-- Rahmenfarben kommen nicht aus dem Theme (Slate, siehe general.col): apply_theme() läuft deshalb
 -- vor LOOK AND FEEL und liefert nur noch die Gruppen-Farben.
