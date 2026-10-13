@@ -4,7 +4,6 @@
 # Farben kommen von der aktiven Shell (L-Shell bzw. Noctalia schreiben themes/noctalia und
 # laden Ghostty neu, auch beim Wechsel zwischen Hell und Dunkel). Abstand um den Text setzt
 # das L-Shell-Theme ebenfalls (10/6 px wie Terminal.app).
-theme = noctalia
 
 # Schrift wie Terminal.app: SF Mono, falls installiert, sonst Menlos Vorlage DejaVu Sans Mono
 # (Menlo basiert darauf). Nerd-Font-Symbole (starship, eza) bringt Ghostty selbst mit.

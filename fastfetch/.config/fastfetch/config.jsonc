@@ -10,10 +10,10 @@
   },
   "display": {
     "color": {
-      "keys": "#c7bfff",
-      "output": "#e5e1ea",
-      "separator": "#928f9d",
-      "title": "#c8c1f0"
+      "keys": "#b7cf8b",
+      "output": "#e4e3db",
+      "separator": "#8f9284",
+      "title": "#c1cbaa"
     }
   },
   "modules": [
@@ -22,17 +22,17 @@
     {
       "type": "os",
       "key": " OS",
-      "keyColor": "#c7bfff"
+      "keyColor": "#b7cf8b"
     },
     {
       "type": "host",
       "key": "󰌢 PC",
-      "keyColor": "#ffade2"
+      "keyColor": "#92d4b5"
     },
     {
       "type": "kernel",
       "key": " Kernel",
-      "keyColor": "#c8c1f0"
+      "keyColor": "#c1cbaa"
     },
     {
       "type": "uptime",
@@ -42,27 +42,27 @@
     {
       "type": "packages",
       "key": "󰏖 Pkgs",
-      "keyColor": "#c7bfff"
+      "keyColor": "#b7cf8b"
     },
     {
       "type": "shell",
       "key": " Shell",
-      "keyColor": "#ffade2"
+      "keyColor": "#92d4b5"
     },
     {
       "type": "wm",
       "key": " WM",
-      "keyColor": "#c8c1f0"
+      "keyColor": "#c1cbaa"
     },
     {
       "type": "terminal",
       "key": " Term",
-      "keyColor": "#c7bfff"
+      "keyColor": "#b7cf8b"
     },
     {
       "type": "cpu",
       "key": " CPU",
-      "keyColor": "#ffade2"
+      "keyColor": "#92d4b5"
     },
     {
       "type": "memory",
@@ -72,7 +72,7 @@
     {
       "type": "battery",
       "key": "󰁹 Batt",
-      "keyColor": "#c8c1f0"
+      "keyColor": "#c1cbaa"
     },
     "break",
     "colors"
