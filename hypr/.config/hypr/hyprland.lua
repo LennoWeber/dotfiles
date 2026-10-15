@@ -35,7 +35,7 @@ hl.monitor({
 ---------------------
 
 -- Ghostty wie Terminal auf dem Mac (Config: ~/.config/ghostty/config)
-local terminal = "ghostty"
+local terminal = "alacritty"
 local fileManager = "nemo"
 local browser = "/home/lenno/.local/bin/zen"
 local mainMod = "SUPER"
@@ -56,9 +56,7 @@ hl.on("hyprland.start", function()
 	)
 	-- Fensterknöpfe links wie auf dem Mac (rot schließen, grün maximieren; Minimieren gibt es in Hyprland nicht).
 	-- Die Ampelfarben setzt das GTK-Theme von L-Shell.
-	hl.exec_cmd(
-		"gsettings set org.gnome.desktop.wm.preferences button-layout 'close,maximize:'"
-	)
+	hl.exec_cmd("gsettings set org.gnome.desktop.wm.preferences button-layout 'close,maximize:'")
 	hl.exec_cmd("hyprpm reload n")
 	-- zuletzt gewählte Shell (Noctalia oder L-Shell), Fallback auf die andere
 	hl.exec_cmd("/home/lenno/.local/bin/shell-switch start")
