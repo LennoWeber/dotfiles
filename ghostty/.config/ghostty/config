@@ -41,3 +41,4 @@ keybind = performable:ctrl+c=copy_to_clipboard
 # Keine Rückfrage beim Schließen, keine Toasts für Kopieren/Neuladen.
 confirm-close-surface = false
 app-notifications = no-clipboard-copy,no-config-reload
+theme = noctalia
