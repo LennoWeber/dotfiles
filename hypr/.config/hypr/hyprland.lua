@@ -399,3 +399,17 @@ do
 		pcall(dofile, home .. "/.local/state/l-shell/hyprland-design.lua")
 	end
 end
+
+-- >>> aptus >>>
+do
+	local home = os.getenv("HOME") or ""
+	local choice = io.open(home .. "/.local/state/shell-switch/choice", "r")
+	local shellChoice = choice and choice:read("*l") or ""
+	if choice then choice:close() end
+	if shellChoice == "aptus" then
+		pcall(dofile, home .. "/.local/state/aptus/hyprland-look.lua")
+		pcall(dofile, home .. "/.config/aptus/hypr/windowrules.lua")
+	end
+	pcall(dofile, home .. "/.config/aptus/hypr/binds.generated.lua") -- binds are harmless when aptus is not running
+end
+-- <<< aptus <<<

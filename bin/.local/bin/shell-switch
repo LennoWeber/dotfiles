@@ -15,7 +15,7 @@
 
 set -u
 
-SHELLS=(noctalia l-shell)
+SHELLS=(noctalia l-shell aptus)
 LSHELL_REPO="$HOME/Code/Projekte/L-Shell"
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/shell-switch"
 CHOICE_FILE="$STATE_DIR/choice"
@@ -29,6 +29,7 @@ label() {
     case "$1" in
         noctalia) echo "Noctalia" ;;
         l-shell) echo "L-Shell" ;;
+        aptus) echo "aptus" ;;
     esac
 }
 
@@ -71,6 +72,7 @@ bin_for() {
             done
             [ -n "$newest" ] && printf '%s\n' "$newest"
             ;;
+        aptus) command -v aptus ;;
         *) return 1 ;;
     esac
 }
@@ -204,11 +206,15 @@ activate() {
         # Läuft schon eine Shell, bleibt sie. Sonst (Login) Fallback starten.
         [ -n "$current" ] && return 1
     else
-        stop_shell "$fallback" || {
-            log "$fallback ließ sich nicht beenden, Wechsel abgebrochen"
-            notify 3 5000 "$(label "$fallback") ließ sich nicht beenden"
-            return 1
-        }
+        local other
+        for other in "${SHELLS[@]}"; do
+            [ "$other" = "$target" ] && continue
+            stop_shell "$other" || {
+                log "$other ließ sich nicht beenden, Wechsel abgebrochen"
+                notify 3 5000 "$(label "$other") ließ sich nicht beenden"
+                return 1
+            }
+        done
         if lock_holder "$target" >/dev/null; then
             save_choice "$target"
             [ "$current" = "$target" ] && notify 1 2000 "$(label "$target") läuft bereits"
@@ -244,7 +250,7 @@ pick_shell() {
         entries+="$line"$'\n'
     done
     if command -v fuzzel >/dev/null 2>&1; then
-        choice="$(printf '%s' "$entries" | fuzzel --dmenu --index --prompt 'Shell> ' --lines 2 --width 30)"
+        choice="$(printf '%s' "$entries" | fuzzel --dmenu --index --prompt 'Shell> ' --lines 3 --width 30)"
     else
         choice="$(printf '%s' "$entries" | rofi -dmenu -format i -p 'Shell')"
     fi
@@ -294,14 +300,14 @@ case "${1:-menu}" in
         take_switch_lock
         running_shell >/dev/null && exit 0
         target="$(cat "$CHOICE_FILE" 2>/dev/null || true)"
-        case "$target" in noctalia | l-shell) ;; *) target="noctalia" ;; esac
+        case "$target" in noctalia | l-shell | aptus) ;; *) target="noctalia" ;; esac
         activate "$target"
         ;;
     to)
         case "${2:-}" in
-            noctalia | l-shell) ;;
+            noctalia | l-shell | aptus) ;;
             *)
-                echo "Verwendung: shell-switch to noctalia|l-shell" >&2
+                echo "Verwendung: shell-switch to noctalia|l-shell|aptus" >&2
                 exit 2
                 ;;
         esac
