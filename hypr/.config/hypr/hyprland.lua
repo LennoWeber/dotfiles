@@ -113,8 +113,8 @@ hl.config({
 	},
 
 	decoration = {
-		rounding = 10,
-		rounding_power = 4,
+		rounding = 2,
+		rounding_power = 2,
 		active_opacity = 1.0,
 		inactive_opacity = 1.0,
 
@@ -246,6 +246,7 @@ hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(shell .. " screenshot-region"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("~/.local/bin/toggle-laptop-rotation.sh"))
+hl.bind(mainMod .. " + ALT + M", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-mac-bar.sh"))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd(terminal .. " -e yazi"))
 
 -- Fokus & Workspaces
