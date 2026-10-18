@@ -1,8 +1,13 @@
 [window]
-padding = { x = 10, y = 6 }
+padding = { x = 0, y = 0 }
+dynamic_padding = false
 
 [general]
 import = ["~/.config/alacritty/themes/noctalia.toml"]
+
+[colors.primary]
+background = "#fbf1c7"
+
 
 [font]
 size = 12.0
