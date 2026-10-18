@@ -81,6 +81,13 @@ bin_for() {
 # selbst flock aufzurufen: eine Probe-Sperre während eines Starts würde die
 # neue Shell mit "already running" abbrechen lassen.
 lock_holder() {
+    if [ "$1" = aptus ]; then
+        local pidfile="$RUNTIME_DIR/aptus-${WAYLAND_DISPLAY:-wayland-0}.pid" apid acomm
+        apid="$(cat "$pidfile" 2>/dev/null)" || return 1
+        acomm="$(cat "/proc/$apid/comm" 2>/dev/null)" || return 1
+        case "$acomm" in qs | quickshell) echo "$apid" ;; *) return 1 ;; esac
+        return 0
+    fi
     local lock="$RUNTIME_DIR/$1-${WAYLAND_DISPLAY:-wayland-0}.lock" id
     [ -e "$lock" ] || return 1
     id="$(stat -c '%Hd %Ld %i' "$lock" | { read -r major minor ino; printf '%02x:%02x:%d' "$major" "$minor" "$ino"; })"
