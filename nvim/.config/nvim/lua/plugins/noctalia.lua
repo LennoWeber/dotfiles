@@ -1,3 +1,7 @@
+-- Noctalia Theme deaktiviert zugunsten von Gruvbox
+-- stylua: ignore
+if true then return {} end
+
 return {
   {
     "LazyVim/LazyVim",
