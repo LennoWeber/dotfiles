@@ -102,7 +102,7 @@ hl.config({
 		gaps_in = 5,
 		gaps_out = 10,
 		-- L-Shell Slate: 1px-Haarlinie; das aktive Fenster trägt das Bernstein-Signal (siehe L-Shell DESIGN.md)
-		border_size = 1,
+		border_size = 2,
 		col = {
 			active_border = "rgba(f2b04b59)",
 			inactive_border = "rgba(ffffff12)",
@@ -405,7 +405,9 @@ do
 	local home = os.getenv("HOME") or ""
 	local choice = io.open(home .. "/.local/state/shell-switch/choice", "r")
 	local shellChoice = choice and choice:read("*l") or ""
-	if choice then choice:close() end
+	if choice then
+		choice:close()
+	end
 	if shellChoice == "aptus" then
 		pcall(dofile, home .. "/.local/state/aptus/hyprland-look.lua")
 		pcall(dofile, home .. "/.config/aptus/hypr/windowrules.lua")
