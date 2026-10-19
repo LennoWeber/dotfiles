@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Wählt die Desktop-Shell: Noctalia oder L-Shell. Es läuft immer genau eine.
+# Wählt die Desktop-Shell: Noctalia, L-Shell, L-Shell (QuickShell-Port) oder
+# aptus. Es läuft immer genau eine.
 #
 #   shell-switch            Menü zeigen und zur gewählten Shell wechseln
 #   shell-switch start      beim Login: zuletzt gewählte Shell starten
-#   shell-switch to NAME    direkt wechseln (noctalia | l-shell)
+#   shell-switch to NAME    direkt wechseln (noctalia | l-shell | l-shell-qs | aptus)
 #   shell-switch msg ARGS   IPC-Befehl an die laufende Shell weitergeben
 #   shell-switch current    laufende Shell ausgeben
 #
@@ -15,7 +16,7 @@
 
 set -u
 
-SHELLS=(noctalia l-shell aptus)
+SHELLS=(noctalia l-shell l-shell-qs aptus)
 LSHELL_REPO="$HOME/Code/Projekte/L-Shell"
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/shell-switch"
 CHOICE_FILE="$STATE_DIR/choice"
@@ -29,6 +30,7 @@ label() {
     case "$1" in
         noctalia) echo "Noctalia" ;;
         l-shell) echo "L-Shell" ;;
+        l-shell-qs) echo "L-Shell (QS)" ;;
         aptus) echo "aptus" ;;
     esac
 }
@@ -72,6 +74,14 @@ bin_for() {
             done
             [ -n "$newest" ] && printf '%s\n' "$newest"
             ;;
+        l-shell-qs)
+            # QuickShell-Port: der Wrapper startet `qs -p` bzw. reicht IPC
+            # an msg.sh durch.
+            if [ -x "$LSHELL_REPO/quickshell/l-shell-qs" ]; then
+                printf '%s\n' "$LSHELL_REPO/quickshell/l-shell-qs"
+                return 0
+            fi
+            ;;
         aptus) command -v aptus ;;
         *) return 1 ;;
     esac
@@ -81,13 +91,18 @@ bin_for() {
 # selbst flock aufzurufen: eine Probe-Sperre während eines Starts würde die
 # neue Shell mit "already running" abbrechen lassen.
 lock_holder() {
-    if [ "$1" = aptus ]; then
-        local pidfile="$RUNTIME_DIR/aptus-${WAYLAND_DISPLAY:-wayland-0}.pid" apid acomm
-        apid="$(cat "$pidfile" 2>/dev/null)" || return 1
-        acomm="$(cat "/proc/$apid/comm" 2>/dev/null)" || return 1
-        case "$acomm" in qs | quickshell) echo "$apid" ;; *) return 1 ;; esac
-        return 0
-    fi
+    case "$1" in
+        aptus | l-shell-qs)
+            # Beides QuickShell-Instanzen; die PID steht in einer Datei
+            # (aptus schreibt sie selbst, der L-Shell-QS-Port über den
+            # Wrapper quickshell/l-shell-qs).
+            local pidfile="$RUNTIME_DIR/$1-${WAYLAND_DISPLAY:-wayland-0}.pid" apid acomm
+            apid="$(cat "$pidfile" 2>/dev/null)" || return 1
+            acomm="$(cat "/proc/$apid/comm" 2>/dev/null)" || return 1
+            case "$acomm" in qs | quickshell) echo "$apid" ;; *) return 1 ;; esac
+            return 0
+            ;;
+    esac
     local lock="$RUNTIME_DIR/$1-${WAYLAND_DISPLAY:-wayland-0}.lock" id
     [ -e "$lock" ] || return 1
     id="$(stat -c '%Hd %Ld %i' "$lock" | { read -r major minor ino; printf '%02x:%02x:%d' "$major" "$minor" "$ino"; })"
@@ -307,14 +322,14 @@ case "${1:-menu}" in
         take_switch_lock
         running_shell >/dev/null && exit 0
         target="$(cat "$CHOICE_FILE" 2>/dev/null || true)"
-        case "$target" in noctalia | l-shell | aptus) ;; *) target="noctalia" ;; esac
+        case "$target" in noctalia | l-shell | l-shell-qs | aptus) ;; *) target="noctalia" ;; esac
         activate "$target"
         ;;
     to)
         case "${2:-}" in
-            noctalia | l-shell | aptus) ;;
+            noctalia | l-shell | l-shell-qs | aptus) ;;
             *)
-                echo "Verwendung: shell-switch to noctalia|l-shell|aptus" >&2
+                echo "Verwendung: shell-switch to noctalia|l-shell|l-shell-qs|aptus" >&2
                 exit 2
                 ;;
         esac

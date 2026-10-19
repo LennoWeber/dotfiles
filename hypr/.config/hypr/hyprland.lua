@@ -311,7 +311,7 @@ hl.bind("Print", hl.dsp.exec_cmd(shell .. " screenshot-region"))
 -- MX Keys S: Entf – Lock
 hl.bind("XF86ScreenSaver", hl.dsp.exec_cmd(shell .. " session lock"))
 
--- Shell-Auswahl: Noctalia oder L-Shell
+-- Shell-Auswahl: Noctalia, L-Shell, L-Shell (QS) oder aptus
 hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd("/home/lenno/.local/bin/shell-switch"))
 -- Design-Menü von L-Shell: alle eingebauten Systeme, ein Klick schaltet um
 hl.bind(mainMod .. " + ALT + D", hl.dsp.exec_cmd(shell .. " panel-toggle design"))
