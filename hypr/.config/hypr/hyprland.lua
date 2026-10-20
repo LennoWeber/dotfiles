@@ -99,8 +99,8 @@ require("noctalia").apply_theme()
 
 hl.config({
 	general = {
-		gaps_in = 5,
-		gaps_out = 10,
+		gaps_in = 10,
+		gaps_out = 15,
 		-- L-Shell Slate: 1px-Haarlinie; das aktive Fenster trägt das Bernstein-Signal (siehe L-Shell DESIGN.md)
 		border_size = 2,
 		col = {

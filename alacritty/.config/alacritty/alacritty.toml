@@ -5,10 +5,6 @@ dynamic_padding = false
 [general]
 import = ["~/.config/alacritty/themes/noctalia.toml"]
 
-[colors.primary]
-background = "#fbf1c7"
-
-
 [font]
 size = 12.0
 
