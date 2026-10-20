@@ -1,17 +1,17 @@
 :root {
   color-scheme: dark;
-  --noctalia-surface: #9da9a0;
-  --noctalia-surface-variant: #bec5b2;
-  --noctalia-primary: #434f55;
-  --noctalia-on-surface: #232a2e;
-  --noctalia-outline: #232a2e;
+  --noctalia-surface: #232a2e;
+  --noctalia-surface-variant: #2d353b;
+  --noctalia-primary: #a7c080;
+  --noctalia-on-surface: #adb6b0;
+  --noctalia-outline: #7a8478;
 }
 
 ::selection {
-  background-color: #434f5555;
-  color: #232a2e;
+  background-color: #a7c08055;
+  color: #adb6b0;
 }
 
 * {
-  scrollbar-color: #232a2e #bec5b2;
+  scrollbar-color: #7a8478 #2d353b;
 }

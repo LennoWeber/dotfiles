@@ -2,19 +2,19 @@
 
 * {
     /* was @theme "tokyo": fg0, cyan, red, blue */
-    fg0: #232a2eff;
-    cyan: #232a2eff;
-    red: #e66868ff;
-    blue: #434f55ff;
+    fg0: #859289ff;
+    cyan: #d3c6aaff;
+    red: #e67e80ff;
+    blue: #a7c080ff;
 
-    window-border: #434f55ff;
-    window-bg: #efebd4eb;
-    mainbox-bg: #bec5b2ff;
-    inputbar-bg: #333c43ff;
-    inputbar-border: #232a2ecc;
-    list-bg: #bec5b2ff;
-    element-bg: #bec5b2ff;
-    select-bg: #434f5538;
-    message-border: #232a2ecc;
-    message-bg: #efebd4e6;
+    window-border: #a7c080ff;
+    window-bg: #1e2326eb;
+    mainbox-bg: #2d353bff;
+    inputbar-bg: #a7c080ff;
+    inputbar-border: #7a8478cc;
+    list-bg: #2d353bff;
+    element-bg: #2d353bff;
+    select-bg: #a7c08038;
+    message-border: #7a8478cc;
+    message-bg: #1e2326e6;
 }
